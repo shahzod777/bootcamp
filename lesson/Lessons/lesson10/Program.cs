@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using lesson.Dto.PrayerTime;
-using lesson.Dto.User;
-using lesson.Services;
+using lesson10.Dto.PrayerTime;
+using lesson10.Dto.User;
+using lesson10.Services;
 
-namespace lesson
+namespace lesson10
 {
     class Program
     {
         private static string usersApi = "https://randomuser.me/api/";
-        private static string prayerTimeApi = "http://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=8";
         static async Task Main(string[] args)
         {
+            string countrie = Console.ReadLine();
+            string cities = Console.ReadLine();
+
+            string prayerTimeApi = $"http://api.aladhan.com/v1/timingsByCity?city={cities}&country={countrie}&method=8";
             var httpService = new HttpClientService();
             var result = await httpService.GetObjectAsync<PrayerTime>(prayerTimeApi);
 
@@ -23,14 +26,15 @@ namespace lesson
                     WriteIndented = true
                 };
 
-                var json = JsonSerializer.Serialize(result.Data, settings);
+                var json = JsonSerializer.Serialize(result.Data.Data.Timings, settings)
+                    .Replace("\"", "").Replace("{", "").Replace("}", "")
+                    .Replace(",", "");
                 Console.WriteLine($"{json}");
             }
             else
             {
                 Console.WriteLine($"{result.ErrorMessage}");
             }
-            
         }
         static async Task Main_user(string[] args)
         {
