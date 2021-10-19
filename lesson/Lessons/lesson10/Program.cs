@@ -12,10 +12,10 @@ namespace lesson10
         private static string usersApi = "https://randomuser.me/api/";
         static async Task Main(string[] args)
         {
-            string countrie = Console.ReadLine();
-            string cities = Console.ReadLine();
+            string countryname = Console.ReadLine();
+            string cityname = Console.ReadLine();
 
-            string prayerTimeApi = $"http://api.aladhan.com/v1/timingsByCity?city={cities}&country={countrie}&method=8";
+            string prayerTimeApi = $"http://api.aladhan.com/v1/timingsByCity?city={cityname}&country={countryname}&method=8";
             var httpService = new HttpClientService();
             var result = await httpService.GetObjectAsync<PrayerTime>(prayerTimeApi);
 
